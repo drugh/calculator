@@ -1,0 +1,16 @@
+
+#container {
+    margin: auto;
+    margin-top: 20vh;
+    border: 2px solid black;
+    width: 500px;
+    height: 60vh;
+    display: grid;
+    grid-template: 
+        "display" 1fr
+        "clear backspace divide multiply" 1fr 1fr 1fr 1fr
+        "number number number subtract" 1fr 1fr 1fr 1fr
+        "number number number add" 1fr 1fr 1fr 1fr
+        "number number number equal" 1fr 1fr 1fr 1fr
+        "number dot equal" 2fr 1fr 1fr;
+}
