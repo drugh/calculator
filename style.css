@@ -1,16 +1,72 @@
 
-#container {
+body {
+    background: url("background.jpg");
+    background-size: cover;
+}
+
+.container {
     margin: auto;
     margin-top: 20vh;
-    border: 2px solid black;
-    width: 500px;
+    border: 10px solid rgb(25, 86, 165);
+    border-radius: 10px;
+    width: 400px;
     height: 60vh;
     display: grid;
-    grid-template: 
-        "display" 1fr
-        "clear backspace divide multiply" 1fr 1fr 1fr 1fr
-        "number number number subtract" 1fr 1fr 1fr 1fr
-        "number number number add" 1fr 1fr 1fr 1fr
-        "number number number equal" 1fr 1fr 1fr 1fr
-        "number dot equal" 2fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    background-color: rgb(104, 104, 104);
+    column-gap: 3px;
+    row-gap: 3px;
+}
+
+#display {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 30px;
+    font-size: 30px;
+    border-radius: 5px;
+}
+
+#clear {
+    background-color: rgb(209, 144, 23);
+}
+
+#divide {
+    background-color: rgb(25, 86, 165);
+}
+
+#multiply {
+    background-color: rgb(25, 86, 165);
+}
+
+#subtract {
+    background-color: rgb(25, 86, 165);
+}
+
+#add {
+    background-color: rgb(25, 86, 165);
+}
+
+#zero {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#equal {
+    grid-row-start: 5;
+    grid-row-end: 7;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    background-color: rgb(47, 136, 47);
+}
+
+.container button {
+    text-align: center;
+    font-size: 30px;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(49, 49, 49);
 }
