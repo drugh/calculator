@@ -34,20 +34,53 @@ body {
     background-color: rgb(209, 144, 23);
 }
 
+#backspace {
+
+}
+
+#decimals {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+#decimals p {
+    font-size: 20px;
+    margin: 0px;
+    height: 1.2em;
+}
+
 #divide {
     background-color: rgb(25, 86, 165);
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 4;
+    grid-column-end: 5;
 }
 
 #multiply {
     background-color: rgb(25, 86, 165);
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 4;
+    grid-column-end: 5;
 }
 
 #subtract {
     background-color: rgb(25, 86, 165);
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 4;
+    grid-column-end: 5;
 }
 
 #add {
     background-color: rgb(25, 86, 165);
+    grid-row-start: 5;
+    grid-row-end: 6;
+    grid-column-start: 4;
+    grid-column-end: 5;
 }
 
 #zero {
@@ -56,7 +89,7 @@ body {
 }
 
 #equal {
-    grid-row-start: 5;
+    grid-row-start: 6;
     grid-row-end: 7;
     grid-column-start: 4;
     grid-column-end: 5;
@@ -70,3 +103,12 @@ body {
     color: white;
     background-color: rgb(49, 49, 49);
 }
+
+/* 
+change font-family and font-weight
+    for everything in the container
+    
+change the background to a online one 
+    instead of a local one
+
+*/
