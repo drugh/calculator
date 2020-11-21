@@ -1,6 +1,6 @@
 // CALCULATOR PROJECT by Vlada Mihai Catalin
 
-// Getting the DOM elements
+// Selecting the DOM elements
 const container = document.querySelector('.container');
 const numbers = document.querySelectorAll('.number');
 const plus = document.getElementById('add');
@@ -13,16 +13,17 @@ const display = document.getElementById('display');
 const decimals = document.getElementById('decimals');
 const clear = document.getElementById('clear');
 
-display.textContent = '0';
-let operator = '+';
-let first = '0';
-let second = '';
+let shownString = '0';
+let oldOperator = null;
+let newOperator = null;
+let first = null;
+let second = null;
 let result = null;
-
 
 
 //  FUNCTIONALITY ===========>
 
+updateDisplay();
 
 // SET THE NUMBER OF DECIMALS TO BE DISPLAYED
 //   CAN ONLY GET VALUES BETWEEN 0 AND 5
@@ -36,75 +37,73 @@ decimals.addEventListener('click', (e) => {
 });
 
 clear.addEventListener('click', (e) => {
-    clearScreen();
+    clearScreen('0');
+    updateDisplay();
 });
 
 //  EACH NUMBER YOU ENTER IS STORED IN THE VARIABLE "second"
 numbers.forEach( number => {
     number.addEventListener('click', (e) => {
-        second += e.target.textContent;
-        console.log(first);
-        console.log(operator);
-        console.log(second);
-        displayText(second);
+        asignNumber(e.target.textContent);
+        console.log('first:    ' + first);
+        console.log('oldOpr:   ' + oldOperator);
+        console.log('newOpr:   ' + newOperator);
+        console.log('second:   ' + second);
+        console.log('result:   ' + result);
+        updateDisplay();
     });
 });
 
 plus.addEventListener('click', (e) => {
-    result = operate(operator, first, second);
-    first = result;
-    operator = '+';
-    second = '';
-    console.log(first);
-    console.log(operator);
-    console.log(second);
-    displayText(result + operator);
+    asignAfterOperator('+');
+    console.log('first:    ' + first);
+    console.log('oldOpr:   ' + oldOperator);
+    console.log('newOpr:   ' + newOperator);
+    console.log('second:   ' + second);
+    console.log('result:   ' + result);
+    updateDisplay();
 });
 minus.addEventListener('click', (e) => {
-    result = operate(operator, first, second);
-    first = result;
-    operator = '-';
-    second = '';
-    console.log(first);
-    console.log(operator);
-    console.log(second);
-    displayText(result + operator);
+    asignAfterOperator('-');
+    console.log('first:    ' + first);
+    console.log('oldOpr:   ' + oldOperator);
+    console.log('newOpr:   ' + newOperator);
+    console.log('second:   ' + second);
+    console.log('result:   ' + result);
+    updateDisplay();
 });
 star.addEventListener('click', (e) => {
-    result = operate(operator, first, second);
-    first = result;
-    operator = '*';
-    second = '';
-    console.log(first);
-    console.log(operator);
-    console.log(second);
-    displayText(result + operator);
+    asignAfterOperator('*');
+    console.log('first:    ' + first);
+    console.log('oldOpr:   ' + oldOperator);
+    console.log('newOpr:   ' + newOperator);
+    console.log('second:   ' + second);
+    console.log('result:   ' + result);
+    updateDisplay();
 });
 slash.addEventListener('click', (e) => {
-    result = operate(operator, first, second);
-    first = result;
-    operator = '/';
-    second = '';
-    console.log(first);
-    console.log(operator);
-    console.log(second);
-    displayText(result + operator);
+    asignAfterOperator('/');
+    console.log('first:    ' + first);
+    console.log('oldOpr:   ' + oldOperator);
+    console.log('newOpr:   ' + newOperator);
+    console.log('second:   ' + second);
+    console.log('result:   ' + result);
+    updateDisplay();
 });
 
 equal.addEventListener('click', () => {
-    result = operate(operator, first, second);
-    console.log(first);
-    console.log(operator);
-    console.log(second);
-    displayText(result);
-    if (operate(operator, first, second) === 'ERROR') {
-        clearScreen('ERROR');
-    }
+    calculate();
+    console.log('first:    ' + first);
+    console.log('oldOpr:   ' + oldOperator);
+    console.log('newOpr:   ' + newOperator);
+    console.log('second:   ' + second);
+    console.log('result:   ' + result);
+    updateDisplay();
 });
 
 dot.addEventListener('click', (e) => {
     // loop through each character of pullString and if a dot appears, you can't add it again
-    // this needs to look after an operator, not the whole string
+    // this needs to look after an , not the whole string
     // display.textContent = e.target.textContent;
 });
 // <=============
@@ -113,23 +112,87 @@ dot.addEventListener('click', (e) => {
 
 //  FUNCTIONS ============>
 
-function displayText(string) {
-    if (result === null) {
-        result = 0;
+function updateDisplay() {
+    if (shownString.length > 9) {
+        display.textContent = shownString.substring(0, 9);
+    } else {
+        display.textContent = shownString;
     }
-    display.textContent = string;
+}
+
+function asignNumber(number) {
+    if (shownString == 0) {
+        second = number;
+        result = null;
+    } else if(shownString != 0 && second === null) {
+        if (shownString[shownString.length - 1] === newOperator) {
+            // am apasat un operator inainte de numar
+            second = number;
+            result = null;
+        } else {
+            // am apasat = inainte de numar
+            second = shownString + number;
+            oldOperator = null;
+            newOperator = null;
+            first = null;
+            result = null;
+        }
+    } else {
+        second += number;
+    }
+    shownString = second;
+}
+
+function asignAfterOperator(opr) {
+    if (shownString == 0) {
+        first = '0';
+        newOperator = opr;
+        shownString += opr;
+    } else {
+        oldOperator = newOperator;
+        newOperator = opr;
+        if (oldOperator === null) {
+            first = shownString;
+            shownString += opr;
+        } else {
+            first = operate(oldOperator, first, second);
+            if (first !== 'ERROR') {
+                shownString = first + opr;    
+            }
+        }
+    }
+    second = null;
+}
+
+function calculate() {
+    if (shownString == 0) {
+        clearScreen('0');
+    } else if (shownString[shownString.length - 1] === newOperator) {
+        clearScreen('ERROR');
+    } else {
+        if (newOperator === null) {
+            return;
+        } else {
+            if (result === null) {
+                result = operate(newOperator, first, second);
+                first = result;
+                newOperator = null;
+                second = null;
+                shownString = result;
+            } else {
+                return;
+            }
+        }
+    }
 }
 
 function clearScreen(err) {
-    operator = '+';
-    first = '0';
-    second = '';
+    oldOperator = null;
+    newOperator = null;
+    first = null;
+    second = null;
     result = null;
-    if (err === 'ERROR') {
-        return;
-    } else {
-        display.textContent = '0';
-    }
+    shownString = err;
 }
 
 // FUNCTIONS OF A CALCULATOR ------>
@@ -153,7 +216,7 @@ function divide(a, b) {
 }
 // <--------------
 
-// DYNAMICALLY CALLS AN OPERATOR ------>
+// DYNAMICALLY CALLS AN  ------>
 function operate(operator, a, b) {
     switch (operator) {
         case '+':
