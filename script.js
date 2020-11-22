@@ -12,6 +12,7 @@ const equal = document.getElementById('equal');
 const display = document.getElementById('display');
 const decimals = document.getElementById('decimals');
 const clear = document.getElementById('clear');
+const del = document.getElementById('backspace');
 
 let shownString = '0';
 let oldOperator = null;
@@ -45,67 +46,41 @@ clear.addEventListener('click', (e) => {
 numbers.forEach( number => {
     number.addEventListener('click', (e) => {
         asignNumber(e.target.textContent);
-        console.log('first:    ' + first);
-        console.log('oldOpr:   ' + oldOperator);
-        console.log('newOpr:   ' + newOperator);
-        console.log('second:   ' + second);
-        console.log('result:   ' + result);
         updateDisplay();
     });
 });
 
 plus.addEventListener('click', (e) => {
     asignAfterOperator('+');
-    console.log('first:    ' + first);
-    console.log('oldOpr:   ' + oldOperator);
-    console.log('newOpr:   ' + newOperator);
-    console.log('second:   ' + second);
-    console.log('result:   ' + result);
     updateDisplay();
 });
 minus.addEventListener('click', (e) => {
     asignAfterOperator('-');
-    console.log('first:    ' + first);
-    console.log('oldOpr:   ' + oldOperator);
-    console.log('newOpr:   ' + newOperator);
-    console.log('second:   ' + second);
-    console.log('result:   ' + result);
     updateDisplay();
 });
 star.addEventListener('click', (e) => {
     asignAfterOperator('*');
-    console.log('first:    ' + first);
-    console.log('oldOpr:   ' + oldOperator);
-    console.log('newOpr:   ' + newOperator);
-    console.log('second:   ' + second);
-    console.log('result:   ' + result);
     updateDisplay();
 });
 slash.addEventListener('click', (e) => {
     asignAfterOperator('/');
-    console.log('first:    ' + first);
-    console.log('oldOpr:   ' + oldOperator);
-    console.log('newOpr:   ' + newOperator);
-    console.log('second:   ' + second);
-    console.log('result:   ' + result);
     updateDisplay();
 });
 
 equal.addEventListener('click', () => {
     calculate();
-    console.log('first:    ' + first);
-    console.log('oldOpr:   ' + oldOperator);
-    console.log('newOpr:   ' + newOperator);
-    console.log('second:   ' + second);
-    console.log('result:   ' + result);
     updateDisplay();
 });
 
 dot.addEventListener('click', (e) => {
-    // loop through each character of pullString and if a dot appears, you can't add it again
-    // this needs to look after an , not the whole string
-    // display.textContent = e.target.textContent;
+    addDot();
+    updateDisplay();
 });
+
+del.addEventListener('click', () => {
+    backspace(); 
+    updateDisplay();
+})
 // <=============
 
 
@@ -121,16 +96,16 @@ function updateDisplay() {
 }
 
 function asignNumber(number) {
-    if (shownString == 0) {
+    if(shownString[shownString.length - 1] === '.') {
+        second = shownString + number;
+    } else if ((shownString == 0) || (shownString === 'ERROR')) {
         second = number;
         result = null;
     } else if(shownString != 0 && second === null) {
         if (shownString[shownString.length - 1] === newOperator) {
-            // am apasat un operator inainte de numar
             second = number;
             result = null;
         } else {
-            // am apasat = inainte de numar
             second = shownString + number;
             oldOperator = null;
             newOperator = null;
@@ -148,6 +123,11 @@ function asignAfterOperator(opr) {
         first = '0';
         newOperator = opr;
         shownString += opr;
+    } else if (shownString === 'ERROR') {
+        clearScreen('ERROR');
+        return;
+    } else if (shownString.toString()[shownString.toString().length - 1] === newOperator) {
+        return;
     } else {
         oldOperator = newOperator;
         newOperator = opr;
@@ -166,11 +146,15 @@ function asignAfterOperator(opr) {
 
 function calculate() {
     if (shownString == 0) {
-        clearScreen('0');
+        if ((second == 0) && (newOperator === '/')) {
+            clearScreen('ERROR');
+        } else {
+            clearScreen('0');
+        }
     } else if (shownString[shownString.length - 1] === newOperator) {
         clearScreen('ERROR');
     } else {
-        if (newOperator === null) {
+        if ((newOperator === null) && (shownString === 'ERROR')) {
             return;
         } else {
             if (result === null) {
@@ -186,6 +170,30 @@ function calculate() {
     }
 }
 
+function addDot() {
+    if (shownString[shownString.length - 1] === newOperator) {
+        second = '0';
+        second += '.';
+        shownString = second;
+    } else if (shownString.toString().indexOf('.') !== -1) {
+        return;
+    } else if (shownString === 'ERROR') {
+        return;
+    } else {
+        shownString += '.';
+    }
+}
+
+function backspace() {
+    if (shownString == 0) {
+        clearScreen('0');
+    } else if (shownString.toString().length === 1) {
+        clearScreen('0');
+    } else {
+        shownString = shownString.toString().substring(0, shownString.toString().length - 1);
+    }
+}
+
 function clearScreen(err) {
     oldOperator = null;
     newOperator = null;
@@ -197,26 +205,23 @@ function clearScreen(err) {
 
 // FUNCTIONS OF A CALCULATOR ------>
 function add(a, b) {
-    return Number(a)+Number(b);
+    return Math.floor((Number(a) + Number(b)) * (10**numberOfDecimals)) / (10**numberOfDecimals);
 }
 function subtract(a, b) {
-    return Number(a)-Number(b);
+    return Math.floor((Number(a) - Number(b)) * (10**numberOfDecimals)) / (10**numberOfDecimals);
 }
 function multiply(a, b) {
-    if (!Number(a) || !Number(b)) {
-        return 'ERROR';
-    }
-    return Number(a)*Number(b);
+    return Math.floor((Number(a) * Number(b)) * (10**numberOfDecimals)) / (10**numberOfDecimals);
 }
 function divide(a, b) {
     if (b == 0) {
         return 'ERROR';
     }
-    return Math.floor(Number(a)/Number(b) * (10**numberOfDecimals)) / (10**numberOfDecimals);
+    return Math.floor((Number(a) / Number(b)) * (10**numberOfDecimals)) / (10**numberOfDecimals);
 }
 // <--------------
 
-// DYNAMICALLY CALLS AN  ------>
+// DYNAMICALLY CALLS AN OPERATOR ------>
 function operate(operator, a, b) {
     switch (operator) {
         case '+':
