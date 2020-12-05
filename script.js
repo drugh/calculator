@@ -152,7 +152,7 @@ function calculate() {
             clearScreen('0');
         }
     } else if (shownString[shownString.length - 1] === newOperator) {
-        clearScreen('ERROR');
+        clearScreen(first);
     } else {
         if ((newOperator === null) && (shownString === 'ERROR')) {
             return;
