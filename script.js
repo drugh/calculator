@@ -142,7 +142,7 @@ function asignAfterOperator(opr) {
         }
     }
     second = null;
-}
+} 
 
 function calculate() {
     if (shownString == 0) {

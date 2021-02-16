@@ -1,0 +1,132 @@
+// Variables
+
+$operator-color: rgb(25, 86, 165);
+$bacground-color : rgb(104, 104, 104);
+$clear-color : rgb(209, 144, 23);
+$equal-color : rgb(47, 136, 47);
+$number-color : rgb(49, 49, 49);
+$side : 400px;
+
+
+body {
+    background: url("background.jpg");
+    background-size: auto;
+    margin: 0;
+}
+
+.container {
+    margin: auto;
+    margin-top: 20vh;
+    border: 10px solid $operator-color;
+    border-radius: 10px;
+    width: $side;
+    height: $side;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    background-color: $bacground-color;
+    grid-gap: 3px;
+}
+
+#display {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    background-color: white;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    font-size: 50px;
+    border-radius: 5px;
+}
+
+#clear {
+    background-color: $clear-color;
+}
+
+button:hover {
+    transition: .5s all;
+    transform: scale(1.1);
+}
+
+#decimals {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+#decimals {
+    p {
+        font-size: 20px;
+        margin: 0px;
+        height: 1.2em;
+    }
+}
+
+#divide {
+    background-color: $operator-color;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+#multiply {
+    background-color: $operator-color;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+#subtract {
+    background-color: $operator-color;
+    grid-row-start: 4;
+    grid-row-end: 5;
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+#add {
+    background-color: $operator-color;
+    grid-row-start: 5;
+    grid-row-end: 6;
+    grid-column-start: 4;
+    grid-column-end: 5;
+}
+
+#zero {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#equal {
+    grid-row-start: 6;
+    grid-row-end: 7;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    background-color: $equal-color;
+}
+
+.container {
+    button {
+        text-align: center;
+        font-size: 30px;
+        border-radius: 5px;
+        color: white;
+        background-color: $number-color;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        margin: 0;
+        margin-top: 30vh;
+        width: 100vw;
+        height: 70vh;
+        border: 10px solid $operator-color;
+        border-radius: 10px;
+        box-sizing: border-box;
+    }
+
+}
